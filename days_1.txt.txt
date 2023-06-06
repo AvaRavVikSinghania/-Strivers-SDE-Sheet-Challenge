@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+
+void setZeros(vector<vector<int>> &matrix)
+{
+	// Write your code here.
+	int n=matrix.size();
+	int m=matrix[0].size();
+	vector<pair<int,int>>p;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+         if(matrix[i][j]==0) p.push_back({i,j});
+		}
+	}
+	for(int k=0;k<p.size();k++){
+		int row=p[k].first;
+		int col=p[k].second;
+		for(int i=0;i<m;i++){
+			matrix[row][i]=0;
+		}
+		for(int i=0;i<n;i++){
+			matrix[i][col]=0;
+		}
+	}
+	return ;
+}
+//------------///
+#include <bits/stdc++.h> 
+void sort012(int *arr, int n)
+{
+   //   Write your code here
+   vector<int>temp(3,0);
+   for(int i=0;i<n;i++){
+      temp[arr[i]]++;
+   }
+   int count=0;
+   for(int i=0;i<3;i++){
+      for(int j=0;j<temp[i];j++){
+         arr[count++]=i;
+      }
+   }
+    return ;
+}
+//--------//
+#include <bits/stdc++.h>
+
+int findDuplicate(vector<int> &arr, int n){
+	// Write your code here.
+	int ans=0;
+	vector<int>temp=arr;
+	for(int i=0;i<n;i++){
+		temp[temp[i]%n]+=n;
+	}
+	for(int i=0;i<n;i++){
+		if(temp[i]>=2*n){
+			ans=i;
+		}
+	}
+	return ans;
+}
