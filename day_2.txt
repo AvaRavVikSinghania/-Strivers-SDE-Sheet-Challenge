@@ -1,0 +1,103 @@
+#include <bits/stdc++.h>
+vector<vector<long long int>> printPascal(int n) 
+{
+  // Write your code here.
+  vector<vector<long long int>>dp(n,vector<long long int>(n,0));
+  vector<vector<long long int>>ans;
+  for(int i=0;i<n;i++){
+    vector<long long int>temp;
+    for(int j=0;j<=i;j++){
+      if(j==0||j==i){
+        dp[i][j]=1;
+        temp.push_back(1);
+      }
+      else{
+        dp[i][j]=dp[i-1][j-1]+dp[i-1][j];
+        temp.push_back(dp[i][j]);
+      }
+    }
+    ans.push_back(temp);
+  }
+  return ans;
+}
+//Search in 2 d matrix
+bool searchMatrix(vector<vector<int>>& mat, int target) {
+        int n=mat.size();
+        int m=mat[0].size();
+        int r=0;
+        int c=m-1;
+        while(r<n && c>=0){
+            if(mat[r][c]==target) return true;
+            else if(mat[r][c]>target){
+                c--;
+            }
+            else{
+                r++;
+            }
+        }
+        return false;
+}
+//modular Exponentiation
+#include <bits/stdc++.h>
+
+int modularExponentiation(int x, int n, int m) {
+	// Write your code here.
+	if(x==0) return 0;
+	long long int ans=1;
+	while(n>0){
+		if(n&1){
+			ans=(ans*x*1ll)%m;
+		}
+		x=(x*1ll*x)%m;
+		n>>=1;
+	}
+	return (int)ans;
+}
+//kadane algorithm
+#include <bits/stdc++.h> 
+long long maxSubarraySum(int arr[], int n)
+{
+    long long max_sum=0;
+    long long current_sum=0;
+    for(int i=0;i<n;i++){
+        current_sum+=arr[i];
+        if(current_sum>max_sum){
+            max_sum=current_sum;
+        }
+        if(current_sum<0){
+           current_sum=0;
+        }
+    }
+    return max_sum;
+}
+//Merging of intervals
+#include <bits/stdc++.h> 
+/*
+
+    intervals[i][0] = start point of i'th interval
+    intervals[i][1] = finish point of i'th interval
+
+*/
+
+vector<vector<int>> mergeIntervals(vector<vector<int>> &intervals)
+{
+    // Write your code here.
+    int n=intervals.size();
+    sort(intervals.begin(),intervals.end());
+    vector<vector<int>>ans;
+    int first=intervals[0][0];
+    int second=intervals[0][1];
+    for(int i=1;i<n;i++){
+        if(intervals[i][0]<=second){
+           second=max(intervals[i][1],second);
+        }
+        else{
+            ans.push_back({first,second});
+            first=intervals[i][0];
+            second=intervals[i][1];
+        }
+    }
+    ans.push_back({first,second});
+    return ans;
+}
+
