@@ -1,0 +1,224 @@
+checking intersection Node in linked list
+/****************************************************************
+
+    Following is the class structure of the Node class:
+
+        class Node
+        {
+        public:
+            int data;
+            Node *next;
+            Node()
+            {
+                this->data = 0;
+                next = NULL;
+            }
+            Node(int data)
+            {
+                this->data = data;
+                this->next = NULL;
+            }
+            Node(int data, Node* next)
+            {
+                this->data = data;
+                this->next = next;
+            }
+        };
+
+*****************************************************************/
+
+Node* findIntersection(Node *firstHead, Node *secondHead)
+{
+    //Write your code here
+    Node* f=firstHead;
+    Node* s=secondHead;
+    while(s!=f){
+        if(s==NULL){
+            s=firstHead;
+        }
+        if(f==NULL){
+            f=secondHead;
+        }
+        s=s->next;
+        f=f->next;
+    }
+    return s;
+}
+//count Inversion in the array
+#include <bits/stdc++.h>
+long long merge(int low,int mid,int high,long long arr[]){
+    vector<long long>temp;
+    int left=low;
+    int right=mid+1;
+    long long cnt=0;
+    while(left<=mid && right<=high){
+        if(arr[left]<arr[right]){
+            temp.push_back(arr[left]);
+            left++;
+        }
+        else{
+            temp.push_back(arr[right]);
+            right++;
+            cnt+=(mid-left+1);
+        }
+    }
+    while(left<=mid){
+        temp.push_back(arr[left]);
+        left++;
+    }
+    while(right<=high){
+        temp.push_back(arr[right]);
+        right++;
+    }
+    int index=low;
+    for(int i=0;i<temp.size();i++){
+        arr[index]=temp[i];
+        index++;
+    }
+    return cnt;
+}
+long long mergesort(int low,int high,long long arr[]){
+    long long cnt=0;
+    if(low>=high) return cnt;
+    int mid=(low+high)/2;
+    cnt+=mergesort(low,mid,arr);
+    cnt+= mergesort(mid+1,high,arr);
+    cnt+= merge(low,mid,high,arr);
+    return cnt;
+}
+long long getInversions(long long *arr, int n){
+    // Write your code here.
+    return mergesort(0,n-1,arr);
+}
+//3 sum problem
+sort(arr.begin(), arr.end());
+
+  vector<vector<int>> ans;
+
+  for (int i = 0; i < n - 2; i++) {
+
+    int j = i + 1;
+
+    int k = n - 1;
+
+    while (j < k) {
+
+      if (arr[i] + arr[j] + arr[k] == K) {
+
+        ans.push_back({arr[i], arr[j], arr[k]});
+
+        j++;
+
+        k--;
+
+      } else if (arr[i] + arr[j] + arr[k] > K) {
+
+        k--;
+
+      } else {
+
+        j++;
+
+      }
+
+    }
+
+  }
+
+  sort(ans.begin(), ans.end());
+
+  ans.erase(unique(ans.begin(), ans.end()), ans.end());
+
+  return ans;
+//Palindrome check
+#include <bits/stdc++.h> 
+/****************************************************************
+
+    Following is the class structure of the LinkedListNode class:
+
+    template <typename T>
+    class LinkedListNode
+    {
+    public:
+        T data;
+        LinkedListNode<T> *next;
+        LinkedListNode(T data)
+        {
+            this->data = data;
+            this->next = NULL;
+        }
+    };
+
+*****************************************************************/
+
+bool isPalindrome(LinkedListNode<int> *head) {
+    // Write your code here.
+    LinkedListNode<int>*temp=head;
+    stack<int>st;
+    while(temp){
+        st.push(temp->data);
+        temp=temp->next;
+    }
+    temp=head;
+    while(temp){
+        if(temp->data!=st.top()) return false;
+        st.pop();
+        temp=temp->next;
+    }
+    return true;
+}
+//count Inversion
+#include <bits/stdc++.h> 
+void merge(int low,int mid,int high,vector<int>&arr){
+    vector<int>temp;
+   int left=low;
+   int right=mid+1;
+   while(left<=mid && right<=high){
+    if(arr[left]<=arr[right]){
+        temp.push_back(arr[left]);
+        left++;
+    }
+    else{
+        temp.push_back(arr[right]);
+        right++;
+    }
+   }
+   while(left<=mid){
+    temp.push_back(arr[left]);
+    left++;
+   }
+   while(right<=high){
+    temp.push_back(arr[right]);
+    right++;
+   }
+   int index=low;
+   for(int i=0;i<temp.size();i++){
+      arr[low]=temp[i];
+      low++;
+   }
+}
+int count_pair(int low,int mid,int high,vector<int>arr){
+    int right=mid+1;
+    int cnt=0;
+    for(int i=low;i<=mid;i++){
+        while(right<=high && arr[i]>2*arr[right]){
+            right++;
+        }
+       cnt+=(right-(mid+1));
+    }
+    return cnt;
+}
+int mergesort(int low,int high,vector<int>&arr){
+    int cnt=0;
+    if(low>=high) return cnt;
+    int mid=(low+high)/2;
+   cnt+=mergesort(low,mid,arr);
+   cnt+=mergesort(mid+1,high,arr);
+   cnt+=count_pair(low,mid,high,arr);
+    merge(low,mid,high,arr);
+    return cnt;
+}
+int reversePairs(vector<int> &arr, int n){
+	// Write your code here.
+    return mergesort(0, n-1,arr);	
+}
