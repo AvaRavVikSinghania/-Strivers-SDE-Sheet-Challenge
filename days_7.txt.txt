@@ -1,0 +1,142 @@
+//sum of all subset
+#include <bits/stdc++.h>
+void f(int i,int sum,vector<int>&arr, vector<int>&ans){
+   if(i==arr.size()){
+       ans.push_back(sum);
+       return;
+   }
+   sum+=arr[i];
+   f(i+1,sum,arr,ans);
+   sum-=arr[i];
+   f(i+1,sum,arr,ans);
+}
+vector<int> subsetSum(vector<int> &num)
+{
+    // Write your code here.
+    int n=num.size();
+    vector<int>ans;
+    f(0,0,num,ans);
+    sort(ans.begin(),ans.end());
+    return ans;
+}
+//maximum meeting in a room
+#include <bits/stdc++.h> 
+bool cmp(vector<int>a,vector<int>b){
+    if(a[1]<b[1]) return true;
+    if(a[1]>b[1]) return false;
+    if(a[2]<b[2]) return true;
+    return false;
+}
+vector<int> maximumMeetings(vector<int> &start, vector<int> &end) {
+    // Write your code here.
+    vector<vector<int>>temp;
+    int n=start.size();
+    for(int i=0;i<n;i++){
+        temp.push_back({start[i],end[i],i+1});
+    }
+    sort(temp.begin(),temp.end(),cmp);
+    vector<int>ans;
+    ans.push_back(temp[0][2]);
+    int e=temp[0][1];
+    for(int i=1;i<n;i++){
+       if(temp[i][0]>e){
+           ans.push_back(temp[i][2]);
+           e=temp[i][1];
+       }
+    }
+    //sort(ans.begin(),ans.end());
+    return ans;
+}
+//Maximum Activity
+#include<bits/stdc++.h>
+bool cmp(pair<int,int>a,pair<int,int>b){
+   
+        return a.second<=b.second;
+}
+int maximumActivities(vector<int> &start, vector<int> &finish) {
+    // Write your code here.
+    int n=start.size();
+    vector<pair<int,int>>vec;
+    for(int i=0;i<n;i++){
+        vec.push_back({start[i],finish[i]});
+    }
+    sort(vec.begin(),vec.end(),cmp);
+    int e=vec[0].second;
+    int cnt=1;
+    for(int i=1;i<n;i++){
+        if(vec[i].first>=e){
+            cnt++;
+            e=vec[i].second;
+        }
+    }
+    return cnt;
+}
+//Unique subset problem
+#include <bits/stdc++.h> 
+void f(int i,vector<int>&arr,vector<int>temp,set<vector<int>>&st){
+    if(i==arr.size()){
+        sort(temp.begin(),temp.end());
+        st.insert(temp);
+        return ;
+    }
+    temp.push_back(arr[i]);
+    f(i+1,arr,temp,st);
+    temp.pop_back();
+    f(i+1,arr,temp,st);
+    return ;
+}
+vector<vector<int>> uniqueSubsets(int n, vector<int> &arr)
+{
+    // Write your code here.
+    vector<int>temp;
+    set<vector<int>>st;
+    f(0,arr,temp,st);
+    vector<vector<int>>ans(st.begin(),st.end());
+    return ans;
+}
+//count all subset which sum is equal to given sum
+void f(int i,int sum,vector<int>arr,int k,vector<int>temp,vector<vector<int>>&ans){
+    if(i==arr.size()){
+        if(sum==k){
+        ans.push_back(temp);
+        }
+        return ;
+    }
+    sum+=arr[i];
+    temp.push_back(arr[i]);
+    f(i+1,sum,arr,k,temp,ans);
+    sum-=arr[i];
+    temp.pop_back();
+    f(i+1,sum,arr,k,temp,ans);
+    return ;
+
+}
+vector<vector<int>> findSubsetsThatSumToK(vector<int> arr, int n, int k)
+{
+    // Write your code here.
+    vector<int>temp;
+    vector<vector<int>>ans;
+    f(0,0,arr,k,temp,ans);
+    return ans;
+}
+//Generate all possible string of ans string 
+#include <bits/stdc++.h> 
+void f(int i,int j,string &s,vector<string>&ans){
+    if(i==j){
+        ans.push_back(s);
+        return;
+    }
+    for(int k=i;k<=j;k++){
+        swap(s[i],s[k]);
+        f(i+1,j,s,ans);
+        swap(s[i],s[k]);
+    }
+    return ;
+}
+vector<string> findPermutations(string &s) {
+    // Write your code here.
+    vector<string>ans;
+    int n=s.size();
+    f(0,n-1,s,ans);
+    return ans;
+}
