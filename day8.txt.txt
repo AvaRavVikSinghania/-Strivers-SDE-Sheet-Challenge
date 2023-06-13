@@ -1,0 +1,220 @@
+//Detect cycle in a linked and return node where cycle start
+#include<bits/stdc++.h>
+/****************************************************************
+
+    Following is the class structure of the Node class:
+
+        class Node
+        {
+        public:
+            int data;
+            Node *next;
+            Node()
+            {
+                this->data = 0;
+                next = NULL;
+            }
+            Node(int data)
+            {
+                this->data = data;
+                this->next = NULL;
+            }
+            Node(int data, Node* next)
+            {
+                this->data = data;
+                this->next = next;
+            }
+        };
+
+
+*****************************************************************/
+
+Node *firstNode(Node *head)
+{
+    //    Write your code here.
+    map<Node*,bool>mp;
+    mp[head]=true;
+    head=head->next;
+    while(head){
+        if(mp[head]==true){
+            return head;
+        }
+        mp[head]=true;
+        head=head->next;
+    }
+    return NULL;
+}
+//merge two sorted linlked list
+#include <bits/stdc++.h>
+
+/************************************************************
+
+    Following is the linked list node structure.
+    
+    template <typename T>
+    class Node {
+        public:
+        T data;
+        Node* next;
+
+        Node(T data) {
+            next = NULL;
+            this->data = data;
+        }
+
+        ~Node() {
+            if (next != NULL) {
+                delete next;
+            }
+        }
+    };
+
+************************************************************/
+
+Node<int>* sortTwoLists(Node<int>* first, Node<int>* second)
+{
+    // Write your code here.
+    Node<int>*dummy=new Node <int>(-1);
+    Node<int>*curr=dummy;
+    while(first && second){
+        if(first->data>second->data){
+            curr->next=second;
+            curr=curr->next;
+            second=second->next;
+        }
+        else{
+            curr->next=first;
+            first=first->next;
+            curr=curr->next;
+        }
+    }
+    if(first){
+        curr->next=first;
+    }
+    if(second){
+        curr->next=second;
+    }
+    return dummy->next;
+}
+//Add two number which is represented by linked list
+/**
+ * Definition of linked list:
+ *
+ * class Node {
+ * public:
+ *      int data;
+ *      Node *next;
+ *      Node() {
+ *          this->data = 0;
+ *          this->next = NULL;
+ *      }
+ *      Node(int data) {
+ *          this->data = data;
+ *          this->next = NULL;
+ *      }
+ *      Node (int data, Node *next) {
+ *          this->data = data;
+ *          this->next = next;
+ *      }
+ * };
+ *
+ *************************************************************************/
+
+Node *addTwoNumbers(Node *first, Node *second)
+{
+    // Write your code here.
+        // first=reverse(first);
+        // second=reverse(second);
+        int carry=0;
+         Node* dummy=new Node(0);
+         Node* temp=dummy;
+        while(first ||second || carry){
+            int sum=carry;
+            if(first){
+                sum+=first->data;
+                first=first->next;
+            }
+            if(second){
+                sum+=second->data;
+                second=second->next;
+            }
+            Node* node=new Node(sum%10);
+            carry=sum/10;
+            temp->next=node;
+            temp=temp->next;
+        }
+        return (dummy->next);
+}
+//minimum number of plateform require
+
+int calculateMinPatforms(int at[], int dt[], int n) {
+    // Write your code here.
+    vector<int>vis(2360);
+    for(int i=0;i<n;i++){
+        for(int j=at[i];j<=dt[i];j++){
+            vis[j]++;
+        }
+    }
+    int max_st=0;
+    for(int i=0;i<2360;i++){
+        max_st=max(max_st,vis[i]);
+    }
+    return max_st;
+}
+//optimal
+
+int calculateMinPatforms(int at[], int dt[], int n) {
+    // Write your code here.
+     int que[2400] = {0};
+
+    for (int i = 0; i < n; i++) {
+        que[at[i]] += 1;
+        que[dt[i] + 1] -= 1;
+    }
+
+    for (int i = 1; i < 2400; i++) {
+        que[i] += que[i - 1];
+    }
+
+    int maxPlatforms = 0;
+    for (int i = 0; i < 2400; i++) {
+      maxPlatforms = std::max(maxPlatforms, que[i]);
+    }
+
+    return maxPlatforms;
+}
+all subsequence whose sum is equall to target
+#include<bits/stdc++.h>
+void findCombs(int index , int target , vector<int> &arr, vector<int> &ds, vector<vector<int>> &res){
+
+	//BASE CASE
+	if(target == 0){
+		res.push_back(ds);							
+		return;  					
+	}
+
+        for (int i = index; i < arr.size(); i++) {
+          if (i > index and arr[i] == arr[i - 1]) {
+            continue; 
+          }
+		 if (arr[i] > target) {
+            break;
+          }
+          ds.push_back(arr[i]);
+
+          findCombs(i + 1, target-arr[i], arr, ds, res);
+		  ds.pop_back(); 
+        }
+}
+vector<vector<int>> combinationSum2(vector<int> &arr, int n, int target)
+{
+	// Write your code here.
+	sort(arr.begin(), arr.end());
+	vector<int> ds;
+	vector<vector<int>> res;
+	findCombs(0, target, arr, ds, res);
+	
+	return res;
+}
+
+
