@@ -1,0 +1,114 @@
+//Generate All possible subset
+#include <bits/stdc++.h> 
+void f(int i,vector<int>&arr,vector<int>&ds,vector<vector<int>>&ans){
+    if(i==arr.size()){
+        ans.push_back(ds);
+        return ;
+    }
+    ds.push_back(arr[i]);
+    f(i+1,arr,ds,ans);
+    ds.pop_back();
+    f(i+1,arr,ds,ans);
+}
+vector<vector<int>> pwset(vector<int>v)
+{
+    //Write your code here
+    vector<vector<int>>ans;
+    vector<int>ds;
+    f(0,v,ds,ans);
+    return ans;
+}
+//N queen Problem
+bool isSafe(int row,int col,vector<vector<int>>&board,int n){
+   int dubrow=row;
+   int dubcol=col;
+   while(row>=0 && col>=0){
+       if(board[row][col]==1) return false;
+       row--;
+       col--;
+   }
+    row=dubrow;
+    col=dubcol;
+   while(row<n && col>=0){
+       if(board[row][col]==1) return false;
+       row++;
+       col--;
+   }
+    row=dubrow;
+    col=dubcol;
+   while(row>=0 && col<n){
+       if(board[row][col]==1) return false;
+       row--;
+       col++;
+   }
+    row=dubrow;
+    col=dubcol;
+   while(row<n && col<n){
+       if(board[row][col]==1) return false;
+       row++;
+       col++;
+   }
+   for(int i=0;i<n;i++){
+       if(board[i][dubcol]==1) return false;
+       if(board[dubrow][i]==1) return false;
+   }
+   return true;
+}
+void solve(int col,vector<vector<int>>&board,vector<vector<int>>&ans,int n){
+    if(col==n){
+        vector<int>temp;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                temp.push_back(board[i][j]);
+            }
+        }
+        ans.push_back(temp);
+        return ;
+    }
+    for(int row=0;row<n;row++){
+        if(isSafe(row,col,board,n)){
+            board[row][col]=1;
+            solve(col+1,board,ans,n);
+            board[row][col]=0;
+        }
+    }
+}
+vector<vector<int>> solveNQueens(int n) {
+    // Write your code here.
+    vector<vector<int>>board(n,vector<int>(n,0));
+    vector<vector<int>>ans;
+    solve(0,board,ans,n);
+    return ans;
+}
+//valid Suduko
+bool isPossible(int row,int col,int matrix[9][9],int num){
+    for(int i=0;i<9;i++){
+        if(matrix[i][col]==num) return false;
+        if(matrix[row][i]==num) return false;
+        if(matrix[3*(row/3)+i/3][3*(col/3)+i%3]==num) return false;
+    }
+    return true;
+}
+bool solve(int matrix[9][9]){
+    for(int i=0;i<9;i++){
+        for(int j=0;j<9;j++){
+            if(matrix[i][j]==0){
+                for(int num=1;num<=9;num++){
+                    if(isPossible(i,j,matrix,num)){
+                        matrix[i][j]=num;
+                        if(solve(matrix)==true) return true;
+                        else{
+                            matrix[i][j]=0;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
+    }
+    return true;
+}
+bool isItSudoku(int matrix[9][9]) {
+    // Write your code here.
+    return solve(matrix);
+}
