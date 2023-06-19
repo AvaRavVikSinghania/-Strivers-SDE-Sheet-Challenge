@@ -1,0 +1,273 @@
+//Basic queue Operation
+#include <bits/stdc++.h> 
+class Queue {
+public:
+    queue<int>q;
+    Queue() {
+        // Implement the Constructor
+    }
+
+    /*----------------- Public Functions of Queue -----------------*/
+
+    bool isEmpty() {
+        // Implement the isEmpty() function
+        return q.empty();
+    }
+
+    void enqueue(int data) {
+        // Implement the enqueue() function
+        q.push(data);
+    }
+
+    int dequeue() {
+        // Implement the dequeue() function
+        if(q.empty()) return -1;
+        int top=q.front();
+        q.pop();
+        return top;
+    }
+
+    int front() {
+        // Implement the front() function
+        if(q.empty()) return -1;
+        return q.front();
+    }
+};
+//stack implementation
+#include <bits/stdc++.h> 
+// Stack class.
+class Stack {
+    
+public:
+    stack<int>st;
+    int size;
+    Stack(int capacity) {
+        // Write your code here.
+        size=capacity;
+    }
+
+    void push(int num) {
+        // Write your code here.
+        if(st.size()<size){
+            st.push(num);
+        }
+    }
+
+    int pop() {
+        // Write your code here.
+        if(st.empty()) return -1;
+        int top=st.top();
+        st.pop();
+        return top;
+    }
+    
+    int top() {
+        // Write your code here.
+        if(st.empty()) return -1;
+        return st.top();
+    }
+    
+    int isEmpty() {
+        // Write your code here.
+        return  st.empty();
+    }
+    
+    int isFull() {
+        // Write your code here.
+        return st.size()==size;
+    }
+    
+};
+No of distinct substring with trie data structure
+#include <bits/stdc++.h>
+class Node{
+public:
+   Node* links[26];
+   bool containKey(char ch){
+       return links[ch-'a']!=NULL;
+   }
+   Node* get(char ch){
+       return links[ch-'a'];
+   }
+   void put(char ch,Node* node){
+       links[ch-'a']=node;
+   }
+};
+int distinctSubstring(string &word) {
+    //  Write your code here.
+    Node* root=new Node();
+    int cnt=0;
+    int n=word.size();
+    for(int i=0;i<n;i++){
+        Node*node=root;
+        for(int j=i;j<n;j++){
+            if(!node->containKey(word[j])){
+                cnt++;
+                node->put(word[j],new Node());
+            }
+            node=node->get(word[j]);
+        }
+    }
+    return cnt;
+}
+//Implementation of Trie data structure
+/*
+    Your Trie object will be instantiated and called as such:
+    Trie* obj = new Trie();
+    obj->insert(word);
+    bool check2 = obj->search(word);
+    bool check3 = obj->startsWith(prefix);
+ */
+
+class Node{
+ public:
+    Node* links[26];
+    bool flag=false;
+    bool containskey(char ch){
+        return links[ch-'a']!=NULL;
+    }
+    void put(char ch,Node* node){
+        links[ch-'a']=node;
+    }
+    Node* get(char ch){
+        return links[ch-'a'];
+    }
+    bool getEnd(){
+        return flag;
+    }
+    void setEnd(){
+        flag=true;
+    }
+};
+class Trie {
+private: Node* root;
+public:
+    /** Initialize your data structure here. */
+    Trie() {
+       root=new Node();  
+    }
+
+    /** Inserts a word into the trie. */
+    void insert(string word) {
+        Node* node=root;
+        int n=word.size();
+        for(int i=0;i<n;i++){
+           if(!node->containskey(word[i])){
+               node->put(word[i],new Node());
+           }
+           node=node->get(word[i]);
+        }
+        node->setEnd();
+    }
+
+    /** Returns if the word is in the trie. */
+    bool search(string word) {
+        Node* node=root;
+        int n=word.size();
+        for(int i=0;i<n;i++){
+            if(!node->containskey(word[i])) return false;
+            node=node->get(word[i]);
+        }
+        return node->getEnd();
+    }
+
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    bool startsWith(string prefix) {
+         int n=prefix.size();
+         Node* node=root;
+         for(int i=0;i<n;i++){
+             if(!node->containskey(prefix[i])) return false;
+             node=node->get(prefix[i]);
+         }
+         return true;
+    }
+};
+//count No string that is present  with the help of trie
+#include <bits/stdc++.h> 
+class Node{
+  public:
+    Node* links[26];
+    int cntend=0;
+    int cntprefix=0;
+    bool containskey(char ch){
+        return links[ch-'a']!=NULL;
+    }
+    void put(char ch, Node* node){
+        links[ch-'a']=node;
+    }
+    Node* get(char ch){
+        return links[ch-'a'];
+    }
+    void incearedPrefix(){
+        cntprefix++;
+    }
+    void increasedEnd(){
+        cntend++;
+    }
+    int getEnd(){
+        return cntend;
+    }
+    int getPrefix(){
+        return cntprefix;
+    }
+    void decreasedprefix(){
+        cntprefix--;
+    }
+    void decreasedend(){
+        cntend--;
+    }
+};
+class Trie{
+    private: Node* root;
+    public:
+
+    Trie(){
+        // Write your code here.
+        root=new Node();
+    }
+
+    void insert(string &word){
+        // Write your code here.
+        Node* node=root;
+        for(int i=0;i<word.size();i++){
+            if(!node->containskey(word[i])){
+                node->put(word[i],new Node());
+            }
+            node->incearedPrefix();
+            node=node->get(word[i]);
+        }
+        node->increasedEnd();
+    }
+
+    int countWordsEqualTo(string &word){
+        // Write your code here.
+        Node* node=root;
+        for(int i=0;i<word.size();i++){
+           if(!node->containskey(word[i])) return 0;
+           node=node->get(word[i]);
+        }
+        return node->getEnd();
+    }
+
+    int countWordsStartingWith(string &word){
+        // Write your code here.
+        Node* node=root;
+        for(int i=0;i<word.size();i++){
+            if(!node->containskey(word[i])) return 0; 
+           node=node->get(word[i]);
+        }
+        return node->getPrefix();
+    }
+
+    void erase(string &word){
+        // Write your code here.
+        Node* node=root;
+        for(int i=0;i<word.size();i++){
+           node=node->get(word[i]);
+           node->decreasedprefix();
+
+        }
+        node->decreasedend();
+    }
+};
+
